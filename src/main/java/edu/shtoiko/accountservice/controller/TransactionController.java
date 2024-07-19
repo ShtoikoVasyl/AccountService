@@ -25,7 +25,7 @@ public class TransactionController {
 
     @GetMapping("/account/{id}")
     public List<TransactionDto> getAllDtoByAccountId(@PathVariable("id") long accountId) {
-        return transactionService.getAllDtoByAccountId(accountId);
+        return transactionService.getAllTransactionDtosByAccountId(accountId);
     }
 
     @PostMapping
