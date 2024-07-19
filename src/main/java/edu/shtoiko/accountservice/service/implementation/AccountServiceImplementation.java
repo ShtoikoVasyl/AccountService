@@ -9,6 +9,7 @@ import edu.shtoiko.accountservice.service.CurrentAccountService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ public class AccountServiceImplementation implements CurrentAccountService {
     private short defaultPin;
     private final CurrencyService currencyService;
     private final CurrentAccountRepository currentAccountRepository;
+    private final ModelMapper modelMapper;
 
 
     private AccountResponse createCurrentAccount(AccountRequest accountRequest){
@@ -35,7 +37,7 @@ public class AccountServiceImplementation implements CurrentAccountService {
                 .accountNumber(generateUniqueNumber())
                 .pinCode(defaultPin)
                 .build();
-        return AccountTransformer.getAccountResponse(currentAccountRepository.save(newAccount));
+        return modelMapper.map(currentAccountRepository.save(newAccount), AccountResponse.class);
     }
 
     private Long generateUniqueNumber() {
@@ -54,8 +56,8 @@ public class AccountServiceImplementation implements CurrentAccountService {
     }
 
     public CurrentAccountDto getAccountDtoById(long id){
-        return new CurrentAccountDto(currentAccountRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("CurrentAccount with id=" + id + " not found")));
+        return modelMapper.map(currentAccountRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("CurrentAccount with id=" + id + " not found")), CurrentAccountDto.class);
     }
 
     @Override
@@ -69,7 +71,7 @@ public class AccountServiceImplementation implements CurrentAccountService {
         CurrentAccount currentAccount = currentAccountRepository.findById(accountId).orElseThrow(() ->
                 new EntityNotFoundException("Account with id=" + accountId + " not found"));
         currentAccount.setAccountName(newName);
-        return AccountTransformer.getAccountResponse(currentAccountRepository.save(currentAccount));
+        return modelMapper.map(currentAccountRepository.save(currentAccount), AccountResponse.class);
     }
 
     @Override
@@ -90,7 +92,7 @@ public class AccountServiceImplementation implements CurrentAccountService {
     @Override
     public List<AccountResponse> getAccountsDtoByUserId(long userId) {
         return getByUserId(userId).stream()
-                .map(AccountTransformer::getAccountResponse)
+                .map( ac -> modelMapper.map(ac, AccountResponse.class))
                 .toList();
     }
 }

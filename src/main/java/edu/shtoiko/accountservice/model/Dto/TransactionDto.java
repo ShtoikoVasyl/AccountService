@@ -3,6 +3,7 @@ package edu.shtoiko.accountservice.model.Dto;
 import edu.shtoiko.accountservice.model.enums.TransactionStatus;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -10,7 +11,7 @@ import java.time.Instant;
 
 @Getter
 @Setter
-@Builder
+@NoArgsConstructor
 public class TransactionDto {
     private String id;
     private Instant date;

@@ -1,8 +1,7 @@
 package edu.shtoiko.accountservice.service.implementation;
 
 import edu.shtoiko.accountservice.model.Dto.TransactionDto;
-import edu.shtoiko.accountservice.model.Dto.TransactionReqest;
-import edu.shtoiko.accountservice.model.Dto.TransactionTransformer;
+import edu.shtoiko.accountservice.model.Dto.TransactionRequest;
 import edu.shtoiko.accountservice.model.account.CurrentAccount;
 import edu.shtoiko.accountservice.model.entity.Transaction;
 import edu.shtoiko.accountservice.model.enums.TransactionStatus;
@@ -10,6 +9,7 @@ import edu.shtoiko.accountservice.repository.TransactionRepository;
 import edu.shtoiko.accountservice.service.TransactionService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,12 +20,14 @@ public class TransactionServiceImplementation implements TransactionService {
 
     private final TransactionRepository transactionRepository;
 
+    private final ModelMapper modelMapper;
+
     @Override
-    public TransactionDto create(TransactionReqest transactionReqest) {
-        Transaction newTransaction = TransactionTransformer.convertToEntity(transactionReqest);
+    public TransactionDto create(TransactionRequest transactionRequest) {
+        Transaction newTransaction = modelMapper.map(transactionRequest, Transaction.class);
         newTransaction.setSystemComment("Transfer between accounts");
         newTransaction.setTransactionStatus(TransactionStatus.NEW);
-        return TransactionTransformer.convertToDto(transactionRepository.save(newTransaction));
+        return modelMapper.map(transactionRepository.save(newTransaction), TransactionDto.class);
     }
 
     @Override
@@ -42,6 +44,6 @@ public class TransactionServiceImplementation implements TransactionService {
     public List<TransactionDto> getAllDtoByAccountId(long id) {
         List<Transaction> transactions = transactionRepository.findAllByReceiverAccountNumberOrSenderAccountNumber(id, id);
         return transactions.stream()
-                .map((TransactionTransformer::convertToDto)).toList();
+                .map((tr) -> modelMapper.map(tr, TransactionDto.class)).toList();
     }
 }
