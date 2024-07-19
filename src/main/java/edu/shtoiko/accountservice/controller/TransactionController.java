@@ -1,7 +1,7 @@
 package edu.shtoiko.accountservice.controller;
 
 import edu.shtoiko.accountservice.model.Dto.TransactionDto;
-import edu.shtoiko.accountservice.model.Dto.TransactionReqest;
+import edu.shtoiko.accountservice.model.Dto.TransactionRequest;
 import edu.shtoiko.accountservice.service.TransactionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +29,7 @@ public class TransactionController {
     }
 
     @PostMapping
-    public ResponseEntity<TransactionDto> createTransaction(@RequestBody TransactionReqest transactionReqest){
-        return new ResponseEntity<>(transactionService.create(transactionReqest), HttpStatus.CREATED);
+    public ResponseEntity<TransactionDto> createTransaction(@RequestBody TransactionRequest transactionRequest){
+        return new ResponseEntity<>(transactionService.create(transactionRequest), HttpStatus.CREATED);
     }
 }

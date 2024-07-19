@@ -1,4 +1,4 @@
-package edu.shtoiko.accountservice;
+package edu.shtoiko.accountservice.config;
 
 
 import org.springframework.context.annotation.ComponentScan;

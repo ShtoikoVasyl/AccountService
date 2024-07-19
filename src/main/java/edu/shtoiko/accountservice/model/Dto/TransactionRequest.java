@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-public class TransactionReqest {
+public class TransactionRequest {
 
     private Long receiverAccountNumber;
 
