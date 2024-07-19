@@ -4,7 +4,9 @@ import edu.shtoiko.accountservice.model.entity.Currency;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface CurrencyRepository extends JpaRepository<Currency, Long> {
-    public Currency findCurrencyByCode(String code);
+    public Optional<Currency> findCurrencyByCode(String code);
 }

@@ -26,9 +26,9 @@ edu/shtoiko/accountservice/model/account/CurrentAccount.class
 edu/shtoiko/accountservice/model/enums/TransactionStatus.class
 edu/shtoiko/accountservice/service/implementation/TransactionServiceImplementation.class
 edu/shtoiko/accountservice/service/CurrentAccountService.class
+edu/shtoiko/accountservice/model/Dto/TransactionRequest.class
 edu/shtoiko/accountservice/model/Dto/AccountResponse.class
 edu/shtoiko/accountservice/model/entity/Transaction.class
 edu/shtoiko/accountservice/model/Dto/AccountResponse$AccountResponseBuilder.class
 edu/shtoiko/accountservice/model/account/CurrentAccount$CurrentAccountBuilder.class
 edu/shtoiko/accountservice/controller/AccountController.class
-edu/shtoiko/accountservice/model/Dto/TransactionReqest.class

@@ -11,7 +11,5 @@ public interface TransactionService {
 
     TransactionDto create(TransactionRequest transactionRequest);
     Transaction readById(String id);
-    Transaction update(CurrentAccount currentAccount);
-
-    List<TransactionDto> getAllDtoByAccountId(long id);
+    List<TransactionDto> getAllTransactionDtosByAccountId(long id);
 }

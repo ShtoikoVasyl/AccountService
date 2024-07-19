@@ -12,7 +12,6 @@
 /Users/vasylshtoiko/Desktop/java_test/BankSimulator/back/repo/AccountService/src/main/java/edu/shtoiko/accountservice/AccountServiceApp.java
 /Users/vasylshtoiko/Desktop/java_test/BankSimulator/back/repo/AccountService/src/main/java/edu/shtoiko/accountservice/model/enums/TransactionStatus.java
 /Users/vasylshtoiko/Desktop/java_test/BankSimulator/back/repo/AccountService/src/main/java/edu/shtoiko/accountservice/service/implementation/TransactionServiceImplementation.java
-/Users/vasylshtoiko/Desktop/java_test/BankSimulator/back/repo/AccountService/src/main/java/edu/shtoiko/accountservice/model/Dto/TransactionReqest.java
 /Users/vasylshtoiko/Desktop/java_test/BankSimulator/back/repo/AccountService/src/main/java/edu/shtoiko/accountservice/service/TransactionService.java
 /Users/vasylshtoiko/Desktop/java_test/BankSimulator/back/repo/AccountService/src/main/java/edu/shtoiko/accountservice/model/enums/AccountStatus.java
 /Users/vasylshtoiko/Desktop/java_test/BankSimulator/back/repo/AccountService/src/main/java/edu/shtoiko/accountservice/service/CurrentAccountService.java
@@ -29,4 +28,5 @@
 /Users/vasylshtoiko/Desktop/java_test/BankSimulator/back/repo/AccountService/src/main/java/edu/shtoiko/accountservice/repository/RoleRepository.java
 /Users/vasylshtoiko/Desktop/java_test/BankSimulator/back/repo/AccountService/src/main/java/edu/shtoiko/accountservice/service/implementation/AccountServiceImplementation.java
 /Users/vasylshtoiko/Desktop/java_test/BankSimulator/back/repo/AccountService/src/main/java/edu/shtoiko/accountservice/controller/TransactionController.java
+/Users/vasylshtoiko/Desktop/java_test/BankSimulator/back/repo/AccountService/src/main/java/edu/shtoiko/accountservice/model/Dto/TransactionRequest.java
 /Users/vasylshtoiko/Desktop/java_test/BankSimulator/back/repo/AccountService/src/main/java/edu/shtoiko/accountservice/model/account/CurrentAccount.java
