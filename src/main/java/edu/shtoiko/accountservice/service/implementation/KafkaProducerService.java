@@ -1,15 +1,13 @@
 package edu.shtoiko.accountservice.service.implementation;
 
-import edu.shtoiko.accountservice.service.ProducerService;
+import edu.shtoiko.accountservice.service.MessageProducerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-
 @Service
 @RequiredArgsConstructor
-public class KafkaProducerService implements ProducerService {
+public class KafkaProducerService implements MessageProducerService {
     private static final String TOPIC = "transactions";
 
     private final KafkaTemplate<String, Object> kafkaTemplate;

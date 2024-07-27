@@ -1,5 +1,5 @@
 package edu.shtoiko.accountservice.service;
 
-public interface ProducerService {
+public interface MessageProducerService {
     void sendMessage(Object message);
 }

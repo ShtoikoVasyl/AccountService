@@ -11,6 +11,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class JacksonSerializer<T> implements Serializer<T> {
     private final ObjectMapper objectMapper;
+
     @Override
     public void configure(Map<String, ?> configs, boolean isKey) {
         Serializer.super.configure(configs, isKey);
@@ -29,7 +30,7 @@ public class JacksonSerializer<T> implements Serializer<T> {
             }
             return objectMapper.writeValueAsBytes(data);
         } catch (Exception e) {
-            throw new RuntimeException("Помилка серіалізації об'єкта", e);
+            throw new RuntimeException("Serialization error", e);
         }
     }
 

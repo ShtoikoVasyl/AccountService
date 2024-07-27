@@ -5,6 +5,7 @@ import edu.shtoiko.accountservice.model.Dto.TransactionRequest;
 import edu.shtoiko.accountservice.model.entity.Transaction;
 import edu.shtoiko.accountservice.model.enums.TransactionStatus;
 import edu.shtoiko.accountservice.repository.TransactionRepository;
+import edu.shtoiko.accountservice.service.MessageProducerService;
 import edu.shtoiko.accountservice.service.TransactionService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,8 @@ public class TransactionServiceImplementation implements TransactionService {
 
     private final ModelMapper modelMapper;
 
+    private final MessageProducerService messageProducerService;
+
     @Override
     public TransactionDto create(TransactionRequest transactionRequest) {
         Transaction newTransaction = modelMapper.map(transactionRequest, Transaction.class);
@@ -31,6 +34,7 @@ public class TransactionServiceImplementation implements TransactionService {
         newTransaction.setTransactionStatus(TransactionStatus.NEW);
         newTransaction.setDate(Instant.now());
         newTransaction = transactionRepository.save(newTransaction);
+        messageProducerService.sendMessage(newTransaction);
         log.info("Created new transaction with id={}", newTransaction.getId());
         return modelMapper.map(newTransaction, TransactionDto.class);
     }
