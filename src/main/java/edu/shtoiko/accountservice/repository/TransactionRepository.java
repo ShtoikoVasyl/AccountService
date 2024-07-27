@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface TransactionRepository extends MongoRepository<Transaction, String> {
 
-    public List<Transaction> findAllByReceiverAccountNumberOrSenderAccountNumber(Long receiverAccountId, Long senderAccountId);
+    public List<Transaction> findAllByReceiverAccountNumberOrSenderAccountNumber(Long receiverAccountId,
+        Long senderAccountId);
 }

@@ -30,17 +30,16 @@ public class AccountServiceImplementation implements CurrentAccountService {
     private final CurrentAccountRepository currentAccountRepository;
     private final ModelMapper modelMapper;
 
-
-    private CurrentAccount createCurrentAccount(AccountRequest accountRequest){
+    private CurrentAccount createCurrentAccount(AccountRequest accountRequest) {
         CurrentAccount newAccount = CurrentAccount.builder()
-                .amount(new BigDecimal(0))
-                .accountName(accountRequest.getAccountName())
-                .ownerId(accountRequest.getOwnerId())
-                .currency(currencyService.getCurrencyByCode(accountRequest.getCurrencyCode()))
-                .accountStatus(AccountStatus.OK)
-                .accountNumber(generateUniqueNumber())
-                .pinCode(defaultPin)
-                .build();
+            .amount(new BigDecimal(0))
+            .accountName(accountRequest.getAccountName())
+            .ownerId(accountRequest.getOwnerId())
+            .currency(currencyService.getCurrencyByCode(accountRequest.getCurrencyCode()))
+            .accountStatus(AccountStatus.OK)
+            .accountNumber(generateUniqueNumber())
+            .pinCode(defaultPin)
+            .build();
         newAccount = currentAccountRepository.save(newAccount);
         log.info("New account created, id={}, ownerId={}", newAccount.getId(), newAccount.getOwnerId());
         return newAccount;
@@ -56,14 +55,12 @@ public class AccountServiceImplementation implements CurrentAccountService {
         return accountNumber;
     }
 
-
-
     @Override
     public AccountResponse create(AccountRequest accountRequest) {
         return modelMapper.map(createCurrentAccount(accountRequest), AccountResponse.class);
     }
 
-    public CurrentAccountDto getAccountDtoById(long id){
+    public CurrentAccountDto getAccountDtoById(long id) {
         return modelMapper.map(readById(id), CurrentAccountDto.class);
     }
 
@@ -81,7 +78,8 @@ public class AccountServiceImplementation implements CurrentAccountService {
         log.info("Updating account name for id={} to newName={}", accountId, newName);
         CurrentAccount currentAccount = readById(accountId);
         currentAccount.setAccountName(newName);
-        AccountResponse response = modelMapper.map(currentAccountRepository.save(currentAccount), AccountResponse.class);
+        AccountResponse response =
+            modelMapper.map(currentAccountRepository.save(currentAccount), AccountResponse.class);
         log.info("Account name updated for id={}", accountId);
         return response;
     }
@@ -105,7 +103,7 @@ public class AccountServiceImplementation implements CurrentAccountService {
     @Override
     public List<AccountResponse> getAccountsDtoByUserId(long userId) {
         return getByUserId(userId).stream()
-                .map( ac -> modelMapper.map(ac, AccountResponse.class))
-                .toList();
+            .map(ac -> modelMapper.map(ac, AccountResponse.class))
+            .toList();
     }
 }

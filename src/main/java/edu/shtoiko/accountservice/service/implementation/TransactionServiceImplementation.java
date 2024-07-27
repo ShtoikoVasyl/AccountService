@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 
 @Slf4j
@@ -28,6 +29,7 @@ public class TransactionServiceImplementation implements TransactionService {
         Transaction newTransaction = modelMapper.map(transactionRequest, Transaction.class);
         newTransaction.setSystemComment("Transfer between accounts");
         newTransaction.setTransactionStatus(TransactionStatus.NEW);
+        newTransaction.setDate(Instant.now());
         newTransaction = transactionRepository.save(newTransaction);
         log.info("Created new transaction with id={}", newTransaction.getId());
         return modelMapper.map(newTransaction, TransactionDto.class);
@@ -44,8 +46,9 @@ public class TransactionServiceImplementation implements TransactionService {
     @Override
     public List<TransactionDto> getAllTransactionDtosByAccountId(long id) {
         log.info("Looking for all transaction for accountId={}", id);
-        List<Transaction> transactions = transactionRepository.findAllByReceiverAccountNumberOrSenderAccountNumber(id, id);
+        List<Transaction> transactions =
+            transactionRepository.findAllByReceiverAccountNumberOrSenderAccountNumber(id, id);
         return transactions.stream()
-                .map((tr) -> modelMapper.map(tr, TransactionDto.class)).toList();
+            .map((tr) -> modelMapper.map(tr, TransactionDto.class)).toList();
     }
 }

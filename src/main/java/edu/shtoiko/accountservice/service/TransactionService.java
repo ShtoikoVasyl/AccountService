@@ -10,6 +10,8 @@ import java.util.List;
 public interface TransactionService {
 
     TransactionDto create(TransactionRequest transactionRequest);
+
     Transaction readById(String id);
+
     List<TransactionDto> getAllTransactionDtosByAccountId(long id);
 }

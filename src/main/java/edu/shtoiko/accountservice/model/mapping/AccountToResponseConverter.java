@@ -12,13 +12,13 @@ public class AccountToResponseConverter implements Converter<CurrentAccount, Acc
     public AccountResponse convert(MappingContext<CurrentAccount, AccountResponse> context) {
         CurrentAccount source = context.getSource();
         return AccountResponse.builder()
-                .accountId(source.getId())
-                .accountName(source.getAccountName())
-                .accountStatus(source.getAccountStatus())
-                .accountNumber(source.getAccountNumber())
-                .currencyCode(source.getCurrency().getCode())
-                .ownerId(source.getOwnerId())
-                .amount(source.getAmount())
-                .build();
+            .accountId(source.getId())
+            .accountName(source.getAccountName())
+            .accountStatus(source.getAccountStatus())
+            .accountNumber(source.getAccountNumber())
+            .currencyCode(source.getCurrency().getCode())
+            .ownerId(source.getOwnerId())
+            .amount(source.getAmount())
+            .build();
     }
 }
