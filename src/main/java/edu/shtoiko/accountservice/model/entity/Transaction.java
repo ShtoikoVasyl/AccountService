@@ -2,7 +2,6 @@ package edu.shtoiko.accountservice.model.entity;
 
 import edu.shtoiko.accountservice.model.enums.TransactionStatus;
 import jakarta.persistence.Id;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
