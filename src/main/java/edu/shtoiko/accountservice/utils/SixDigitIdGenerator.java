@@ -13,7 +13,8 @@ public class SixDigitIdGenerator implements BeforeExecutionGenerator {
     private static final Random random = new Random();
 
     @Override
-    public Serializable generate(SharedSessionContractImplementor session, Object obj, Object event, EventType eventType) {
+    public Serializable generate(SharedSessionContractImplementor session, Object obj, Object event,
+        EventType eventType) {
         int id;
         do {
             id = 100000 + random.nextInt(900000);
@@ -23,10 +24,11 @@ public class SixDigitIdGenerator implements BeforeExecutionGenerator {
     }
 
     private boolean isIdExists(SharedSessionContractImplementor session, int id) {
-        String sql = "SELECT COUNT(*) FROM " + session.getEntityPersister(null, null).getEntityName() + " WHERE id = :id";
+        String sql =
+            "SELECT COUNT(*) FROM " + session.getEntityPersister(null, null).getEntityName() + " WHERE id = :id";
         Long count = ((Number) session.createNativeQuery(sql)
-                .setParameter("id", id)
-                .getSingleResult()).longValue();
+            .setParameter("id", id)
+            .getSingleResult()).longValue();
         return count > 0;
     }
 

@@ -27,27 +27,29 @@ public class AccountController {
     }
 
     @GetMapping("/{account_id}/")
-    public CurrentAccountDto readAccount(@PathVariable("account_id") long accountId){
-            return currentAccountService.getAccountDtoById(accountId);
+    public CurrentAccountDto readAccount(@PathVariable("account_id") long accountId) {
+        return currentAccountService.getAccountDtoById(accountId);
     }
 
     @GetMapping("/user/{user_id}/")
-    public ResponseEntity<List<AccountResponse>> readUsersAccounts(@PathVariable("user_id") long userId){
+    public ResponseEntity<List<AccountResponse>> readUsersAccounts(@PathVariable("user_id") long userId) {
         return new ResponseEntity<>(currentAccountService.getAccountsDtoByUserId(userId), HttpStatus.OK);
     }
 
     @PostMapping("/{user_id}/")
-    public ResponseEntity<AccountResponse> createAccount(@PathVariable("user_id") long accountId, @RequestBody AccountRequest accountRequest){
+    public ResponseEntity<AccountResponse> createAccount(@PathVariable("user_id") long accountId,
+        @RequestBody AccountRequest accountRequest) {
         return new ResponseEntity<>(currentAccountService.create(accountRequest), HttpStatus.CREATED);
     }
 
     @PutMapping("/{account_id}/")
-    public ResponseEntity<AccountResponse> updateAccount(@PathVariable("account_id") long accountId, @RequestBody String newName){
+    public ResponseEntity<AccountResponse> updateAccount(@PathVariable("account_id") long accountId,
+        @RequestBody String newName) {
         return new ResponseEntity<AccountResponse>(currentAccountService.updateName(newName, accountId), HttpStatus.OK);
     }
 
     @DeleteMapping("/{account_id}/")
-    public ResponseEntity<Long> deleteAccount(@PathVariable("account_id") long accountId){
+    public ResponseEntity<Long> deleteAccount(@PathVariable("account_id") long accountId) {
         try {
             currentAccountService.delete(accountId);
         } catch (Exception e) {

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class CurrencyServiceImpl implements CurrencyService {
     private final CurrencyRepository currencyRepository;
 
-    public Currency getCurrencyByCode(String code){
+    public Currency getCurrencyByCode(String code) {
         return currencyRepository.findCurrencyByCode(code).orElseThrow(() -> {
             log.error("Account with code={} not found", code);
             return new EntityNotFoundException("Account with id=" + code + " not found");
