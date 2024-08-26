@@ -1,0 +1,2 @@
+INSERT INTO accounts (id, account_name, account_number, status, amount, currency_id, owner_id, pin_code, processing_status)
+VALUES (3, 'BankAccount', '4145000000000001', 'OK', 30000, 2, 0, 2, 'READY');
