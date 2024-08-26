@@ -40,11 +40,9 @@ public class CurrentAccount extends Account {
     private String accountName;
 
     @Column(name = "account_number")
-    @GeneratedValue(strategy = GenerationType.UUID)
     private long accountNumber;
 
     @Column(name = "pin_code")
-    @GeneratedValue(strategy = GenerationType.UUID)
     private short pinCode;
 
     @ManyToOne

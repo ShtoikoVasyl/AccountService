@@ -27,8 +27,4 @@ public class Currency {
 
     @Column(name = "sign", unique = true)
     private String sign;
-
-// @Column(name = "accounts")
-// @OneToMany(mappedBy = "currency")
-// private List<CurrentAccount> accounts;
 }
