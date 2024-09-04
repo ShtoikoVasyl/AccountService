@@ -12,10 +12,10 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 public class CurrentAccountDto {
-    private long accountId;
-    private long ownerId;
+    private Long accountId;
+    private Long ownerId;
     private String accountName;
-    private long accountNumber;
+    private Long accountNumber;
     private Currency currency;
     private BigDecimal amount;
     private AccountStatus accountStatus;

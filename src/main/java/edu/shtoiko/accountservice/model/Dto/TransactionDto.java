@@ -15,8 +15,8 @@ import java.time.Instant;
 public class TransactionDto {
     private String id;
     private Instant date;
-    private long receiverAccountId;
-    private long senderAccountId;
+    private Long receiverAccountId;
+    private Long senderAccountId;
     private BigDecimal amount;
     private String currencyCode;
     private String description;

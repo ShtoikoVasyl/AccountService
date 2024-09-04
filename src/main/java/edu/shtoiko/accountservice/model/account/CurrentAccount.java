@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,28 +32,29 @@ public class CurrentAccount extends Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    @Column
+    @NotNull(message = "Owner ID cannot be null")
+    @Column(nullable = false)
     private Long ownerId;
 
-    @Column(name = "account_name")
+    @Column(name = "account_name", nullable = false)
     private String accountName;
 
-    @Column(name = "account_number")
-    private long accountNumber;
+    @Column(name = "account_number", nullable = false, unique = true)
+    private Long accountNumber;
 
-    @Column(name = "pin_code")
-    private short pinCode;
+    @Column(name = "pin_code", nullable = false)
+    private Short pinCode;
 
     @ManyToOne
-    @JoinColumn(name = "currency_id")
+    @JoinColumn(name = "currency_id", nullable = false)
     private Currency currency;
 
     @Column(name = "amount")
     private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private AccountStatus accountStatus;
 }

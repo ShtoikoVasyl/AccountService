@@ -1,11 +1,15 @@
 edu/shtoiko/accountservice/AccountServiceApp.class
+edu/shtoiko/accountservice/service/MessageProducerService.class
 edu/shtoiko/accountservice/config/MapperConfig.class
 edu/shtoiko/accountservice/model/Dto/AccountRequest.class
 edu/shtoiko/accountservice/model/account/Account.class
+edu/shtoiko/accountservice/config/KafkaConfig.class
 edu/shtoiko/accountservice/model/entity/Role.class
 edu/shtoiko/accountservice/service/TransactionService.class
 edu/shtoiko/accountservice/model/enums/AccountType.class
+edu/shtoiko/accountservice/service/implementation/KafkaProducerService.class
 edu/shtoiko/accountservice/repository/RoleRepository.class
+edu/shtoiko/accountservice/utils/JacksonSerializer.class
 edu/shtoiko/accountservice/config/AppConfig.class
 edu/shtoiko/accountservice/service/implementation/AccountServiceImplementation.class
 edu/shtoiko/accountservice/controller/TransactionController.class

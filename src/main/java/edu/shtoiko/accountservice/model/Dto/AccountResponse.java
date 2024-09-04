@@ -10,10 +10,10 @@ import java.math.BigDecimal;
 @Data
 @Builder
 public class AccountResponse {
-    private long accountId;
-    private long ownerId;
+    private Long accountId;
+    private Long ownerId;
     private String accountName;
-    private long accountNumber;
+    private Long accountNumber;
     private String currencyCode;
     private BigDecimal amount;
     private AccountType accountType;
