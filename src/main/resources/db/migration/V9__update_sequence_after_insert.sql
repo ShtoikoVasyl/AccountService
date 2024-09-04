@@ -1,0 +1,1 @@
+SELECT setval('accounts_id_seq', (SELECT MAX(id) FROM accounts));

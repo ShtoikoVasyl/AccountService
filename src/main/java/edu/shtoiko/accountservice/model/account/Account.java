@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 public abstract class Account {
-    private long id;
+    private Long id;
 
     private Long ownerId;
 

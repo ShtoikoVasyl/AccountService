@@ -1,0 +1,1 @@
+SELECT setval('currency_id_seq', (SELECT MAX(id) FROM currency));
