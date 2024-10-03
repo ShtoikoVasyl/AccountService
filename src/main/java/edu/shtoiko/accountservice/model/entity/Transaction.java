@@ -17,6 +17,8 @@ public class Transaction {
     @Id
     private String id;
 
+    private Long createdBy;
+
     private Instant date;
 
     private Long receiverAccountNumber;

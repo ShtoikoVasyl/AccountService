@@ -1,11 +1,13 @@
 package edu.shtoiko.accountservice.service.implementation;
 
+import edu.shtoiko.accountservice.exception.ResponseException;
 import edu.shtoiko.accountservice.model.entity.Currency;
 import edu.shtoiko.accountservice.repository.CurrencyRepository;
 import edu.shtoiko.accountservice.service.CurrencyService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -17,7 +19,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     public Currency getCurrencyByCode(String code) {
         return currencyRepository.findCurrencyByCode(code).orElseThrow(() -> {
             log.error("Account with code={} not found", code);
-            return new EntityNotFoundException("Account with id=" + code + " not found");
+            return new ResponseException(HttpStatus.BAD_REQUEST, "Currency " + code + " not found");
         });
     }
 }

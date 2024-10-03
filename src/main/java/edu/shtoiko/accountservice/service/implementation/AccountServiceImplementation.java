@@ -1,19 +1,20 @@
 package edu.shtoiko.accountservice.service.implementation;
 
-import edu.shtoiko.accountservice.model.Dto.AccountRequest;
-import edu.shtoiko.accountservice.model.Dto.AccountResponse;
-import edu.shtoiko.accountservice.model.Dto.CurrentAccountDto;
+import edu.shtoiko.accountservice.exception.ResponseException;
+import edu.shtoiko.accountservice.model.Dto.*;
+import edu.shtoiko.accountservice.model.account.Account;
 import edu.shtoiko.accountservice.model.enums.AccountStatus;
 import edu.shtoiko.accountservice.model.account.CurrentAccount;
+import edu.shtoiko.accountservice.model.enums.ProcessingStatus;
 import edu.shtoiko.accountservice.repository.CurrentAccountRepository;
 import edu.shtoiko.accountservice.service.CurrencyService;
 import edu.shtoiko.accountservice.service.CurrentAccountService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -30,15 +31,16 @@ public class AccountServiceImplementation implements CurrentAccountService {
     private final CurrentAccountRepository currentAccountRepository;
     private final ModelMapper modelMapper;
 
-    private CurrentAccount createCurrentAccount(AccountRequest accountRequest) {
+    private CurrentAccount createCurrentAccount(AccountCreateRequest accountRequest) {
         CurrentAccount newAccount = CurrentAccount.builder()
             .amount(new BigDecimal(0))
             .accountName(accountRequest.getAccountName())
-            .ownerId(accountRequest.getOwnerId())
+            .ownerId(Long.parseLong(accountRequest.getOwnerId()))
             .currency(currencyService.getCurrencyByCode(accountRequest.getCurrencyCode()))
             .accountStatus(AccountStatus.OK)
             .accountNumber(generateUniqueNumber())
             .pinCode(defaultPin)
+            .processingStatus(ProcessingStatus.READY)
             .build();
         newAccount = currentAccountRepository.save(newAccount);
         log.info("New account created, id={}, ownerId={}", newAccount.getId(), newAccount.getOwnerId());
@@ -56,38 +58,20 @@ public class AccountServiceImplementation implements CurrentAccountService {
     }
 
     @Override
-    public AccountResponse create(AccountRequest accountRequest) {
+    public AccountResponse create(AccountCreateRequest accountRequest) {
         return modelMapper.map(createCurrentAccount(accountRequest), AccountResponse.class);
     }
 
-    public CurrentAccountDto getAccountDtoById(long id) {
+    public CurrentAccountDto getAccountDtoById(Long id) {
         return modelMapper.map(readById(id), CurrentAccountDto.class);
     }
 
     @Override
-    public CurrentAccount readById(long id) {
+    public CurrentAccount readById(Long id) {
         return currentAccountRepository.findById(id).orElseThrow(() -> {
             log.error("Account with id={} not found", id);
-            return new EntityNotFoundException("Account with id=" + id + " not found");
+            return new ResponseException(HttpStatus.NOT_FOUND, "Account with id=" + id + " not found");
         });
-    }
-
-    @Transactional
-    @Override
-    public AccountResponse updateName(String newName, long accountId) {
-        log.info("Updating account name for id={} to newName={}", accountId, newName);
-        CurrentAccount currentAccount = readById(accountId);
-        currentAccount.setAccountName(newName);
-        AccountResponse response =
-            modelMapper.map(currentAccountRepository.save(currentAccount), AccountResponse.class);
-        log.info("Account name updated for id={}", accountId);
-        return response;
-    }
-
-    @Override
-    public void delete(long id) {
-        log.info("Deleting account with id={}", id);
-        currentAccountRepository.deleteById(id);
     }
 
     @Override
@@ -96,14 +80,95 @@ public class AccountServiceImplementation implements CurrentAccountService {
     }
 
     @Override
-    public List<CurrentAccount> getByUserId(long userId) {
+    public List<CurrentAccount> getByUserId(Long userId) {
         return currentAccountRepository.findAllByOwnerId(userId);
     }
 
     @Override
-    public List<AccountResponse> getAccountsDtoByUserId(long userId) {
+    public List<AccountResponse> getAccountsResponseByUserId(Long userId) {
         return getByUserId(userId).stream()
             .map(ac -> modelMapper.map(ac, AccountResponse.class))
             .toList();
+    }
+
+    @Override
+    public AccountResponse getAccountResponseById(Long accountId) {
+        return modelMapper.map(readById(accountId), AccountResponse.class);
+    }
+
+    @Override
+    public AccountResponse getAccountResponseByNumber(Long accountNumber) {
+        return modelMapper.map(readByNumber(accountNumber), AccountResponse.class);
+    }
+
+    private CurrentAccount readByNumber(Long accountNumber) {
+        CurrentAccount account = currentAccountRepository.findByAccountNumber(accountNumber);
+        if (account == null) {
+            throw new ResponseException(HttpStatus.BAD_REQUEST, "Account " + accountNumber + " not found");
+        }
+        return account;
+    }
+
+    // todo: should be rewritten using single search method in the repo
+    @Override
+    public AccountResponse getAccountResponseByCredentials(AccountRequestCredentials credentials) {
+        return getAccountResponseByAccountIdAndOwnerId(Long.parseLong(credentials.getAccountId()),
+            Long.parseLong(credentials.getOwnerId()));
+    }
+
+    private AccountResponse getAccountResponseByAccountIdAndOwnerId(Long accountId, Long ownerId) {
+        AccountResponse account = getAccountResponseById(accountId);
+        if (!account.getOwnerId().equals(ownerId)) {
+            throw new ResponseException(HttpStatus.NOT_FOUND, "Account with account id:" + accountId
+                + " and ownerId:" + accountId + " not found");
+        }
+        return account;
+    }
+
+    @Override
+    public AccountResponse deleteByAccountCredentials(AccountRequestCredentials credentials) {
+        return deleteByAccountIdAndOwnerId(Long.parseLong(credentials.getAccountId()),
+            Long.parseLong(credentials.getOwnerId()));
+    }
+
+    @Override
+    @Transactional
+    public AccountResponse updateAccountNameByUpdateRequest(AccountUpdateNameRequest updateRequest) {
+        log.info("Updating account name for id={} to newName={}", updateRequest.getAccountId(),
+            updateRequest.getNewName());
+        CurrentAccount account = readById(Long.parseLong(updateRequest.getAccountId()));
+        if (account.getOwnerId().equals(Long.parseLong(updateRequest.getOwnerId()))) {
+            return updateAccountName(account, updateRequest.getNewName());
+        } else {
+            throw new ResponseException(HttpStatus.FORBIDDEN, "Requested and real ownerIds mismatch");
+        }
+    }
+
+    @Override
+    public AccountResponse updateAccountName(CurrentAccount account, String newName) {
+        account.setAccountName(newName);
+        AccountResponse response =
+            modelMapper.map(currentAccountRepository.save(account), AccountResponse.class);
+        log.info("Account name updated for id={}", account.getId());
+        return response;
+    }
+
+    // todo: should be rewritten using single search method in the repo
+    public AccountResponse deleteByAccountIdAndOwnerId(Long accountId, Long ownerId) {
+        CurrentAccount account = readById(accountId);
+        if (!account.getOwnerId().equals(ownerId)) {
+            throw new ResponseException(HttpStatus.NOT_FOUND, "Account with account id:" + accountId
+                + " and ownerId:" + accountId + " not found");
+        }
+        currentAccountRepository.delete(account);
+        return modelMapper.map(account, AccountResponse.class);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        readById(id);
+        currentAccountRepository.deleteById(id);
+        log.info("Account id={} was deleted", id);
     }
 }

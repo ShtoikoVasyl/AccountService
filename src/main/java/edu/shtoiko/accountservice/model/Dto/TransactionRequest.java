@@ -1,5 +1,6 @@
 package edu.shtoiko.accountservice.model.Dto;
 
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
@@ -12,6 +13,10 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 public class TransactionRequest {
+
+    @NotNull
+    @Positive
+    private String createdBy;
 
     @Size(min = 16, max = 16, message = "The account number must be exactly 16 digits")
     @Pattern(regexp = "\\d{16}", message = "The account number must contain only digits")

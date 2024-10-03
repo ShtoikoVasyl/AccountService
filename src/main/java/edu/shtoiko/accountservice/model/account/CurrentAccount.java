@@ -2,6 +2,7 @@ package edu.shtoiko.accountservice.model.account;
 
 import edu.shtoiko.accountservice.model.enums.AccountStatus;
 import edu.shtoiko.accountservice.model.entity.Currency;
+import edu.shtoiko.accountservice.model.enums.ProcessingStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -57,4 +58,8 @@ public class CurrentAccount extends Account {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private AccountStatus accountStatus;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "processing_status", nullable = false)
+    private ProcessingStatus processingStatus;
 }
