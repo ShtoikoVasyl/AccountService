@@ -11,4 +11,6 @@ public interface CurrentAccountRepository extends JpaRepository<CurrentAccount, 
     List<CurrentAccount> findAllByOwnerId(long id);
 
     boolean existsByAccountNumber(long accountNumber);
+
+    CurrentAccount findByAccountNumber(Long accountNumber);
 }

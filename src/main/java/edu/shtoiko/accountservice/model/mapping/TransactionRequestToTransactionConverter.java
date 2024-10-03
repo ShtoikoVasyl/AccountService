@@ -22,6 +22,7 @@ public class TransactionRequestToTransactionConverter implements Converter<Trans
             destination.setSenderAccountNumber(Long.parseLong(source.getSenderAccountNumber()));
         }
 
+        destination.setCreatedBy(Long.parseLong(source.getCreatedBy()));
         destination.setAmount(source.getAmount());
         destination.setCurrencyCode(source.getCurrencyCode());
         destination.setDescription(source.getDescription());

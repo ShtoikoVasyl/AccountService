@@ -1,5 +1,6 @@
 package edu.shtoiko.accountservice.service;
 
+import edu.shtoiko.accountservice.model.Dto.AccountRequestCredentials;
 import edu.shtoiko.accountservice.model.Dto.TransactionDto;
 import edu.shtoiko.accountservice.model.Dto.TransactionRequest;
 import edu.shtoiko.accountservice.model.account.CurrentAccount;
@@ -14,4 +15,6 @@ public interface TransactionService {
     Transaction readById(String id);
 
     List<TransactionDto> getAllTransactionDtosByAccountId(long id);
+
+    List<TransactionDto> getAllTransactionDtosByAccountCredentials(AccountRequestCredentials credentials);
 }

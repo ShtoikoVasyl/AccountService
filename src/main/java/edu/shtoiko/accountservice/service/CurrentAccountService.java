@@ -1,29 +1,35 @@
 package edu.shtoiko.accountservice.service;
 
-import edu.shtoiko.accountservice.model.Dto.AccountRequest;
-import edu.shtoiko.accountservice.model.Dto.AccountResponse;
-import edu.shtoiko.accountservice.model.Dto.CurrentAccountDto;
+import edu.shtoiko.accountservice.model.Dto.*;
 import edu.shtoiko.accountservice.model.account.CurrentAccount;
 
 import java.util.List;
 
 public interface CurrentAccountService {
 
-    AccountResponse create(AccountRequest accountRequest);
+    AccountResponse create(AccountCreateRequest accountRequest);
 
-    CurrentAccount readById(long id);
+    CurrentAccount readById(Long id);
 
-    AccountResponse updateName(String newName, long accountId);
+    AccountResponse updateAccountName(CurrentAccount account, String newName);
 
-    void delete(long id);
+    void delete(Long id);
 
-    public CurrentAccountDto getAccountDtoById(long id);
+    public CurrentAccountDto getAccountDtoById(Long id);
 
     List<CurrentAccount> getAll();
 
-    List<CurrentAccount> getByUserId(long userId);
+    List<CurrentAccount> getByUserId(Long userId);
 
-    List<AccountResponse> getAccountsDtoByUserId(long userId);
+    List<AccountResponse> getAccountsResponseByUserId(Long userId);
 
-//    User getByUserName();
+    AccountResponse getAccountResponseById(Long accountId);
+
+    AccountResponse getAccountResponseByNumber(Long accountNumber);
+
+    AccountResponse getAccountResponseByCredentials(AccountRequestCredentials account);
+
+    AccountResponse deleteByAccountCredentials(AccountRequestCredentials account);
+
+    AccountResponse updateAccountNameByUpdateRequest(AccountUpdateNameRequest updateNameRequest);
 }
